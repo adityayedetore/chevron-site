@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+	<title>Navigation</title>
+	<style type="text/css">
+		.buttonFormatting {
+			padding: 10px;
+			height: 100px; 
+			width: 300px;
+			border: 4px outset gray;
+			margin: 0 auto;
+			text-decoration: none;
+			background-color: none;
+		}
+
+		.smallButton {
+			height: 50px;
+		}
+
+		h1 {
+			height: 50px;
+			width: 400px;
+			margin: 0 auto;
+
+		}
+
+		.instructions {
+			height: 140px;
+			width: 400px;
+			margin: 0 auto;
+
+		}
+
+	</style>
+</head>
+<body>
+	<h1 >Navigation</h1>
+	<div class="instructions"><p>Participants won't see this page. Below are buttons you can use to save and view the experimental data, and to reset the experiment. Note that at any given time, a csv (with a impossible name) is collecting data from the <a href="http://www.na.perceptionresearch.org" target="_blank">na.perceptionresearch.org</a>. That data can be viewed using the first button. If results are not what is expected, try reloading target page.  </p>  </div>
+
+	<a href="cerchioquadrato.csv" target="_blank"><div class="buttonFormatting smallButton" id="view_current_results" ><strong>VIEW CURRENT DATA</strong> (could be empty)</div></a>
+	<a href="results" target="_blank"><div class="buttonFormatting smallButton" id="download_results" > <strong>VIEW PAST DATA </strong>(can download from here)</div></a>
+	<a href="counter/view.php" target="_blank"><div class="buttonFormatting smallButton" id="view_current_results" ><strong>VIEW EXPERIMENT STATUS</strong> (an array indicating compleation amount)</div></a>
+	<div class="buttonFormatting" id="save" ><strong>SAVE CURRENT DATA</strong></div>
+	<div class="buttonFormatting" id="save_and_clear" ><strong>SAVE AND CLEAR CURRENT DATA</strong></div>
+	<div class="buttonFormatting" id="save_and_reset" ><strong>SAVE DATA AND RESET EXPERIMENT </strong></div>
+	<div class="buttonFormatting" id="remove_unfinished_participants" ><strong>REMOVE UNFINISHED PARTICIPANTS UP TO ... (see below) </strong> </div>
+	<div class="instructions">... up to participant number: <input id="clear_up_to" type="number" name="clear_up_to" value="0"></input><p>The input box above specifies the number up to which you want to clear the participant trials. In general, the lower the number trial, the less likely a participant is working on it when the value is 1. Thus with this you can re-open the trials which probably have no particpants currently doing them.</p></p><p>The button above will re-open any of the trials for which we are not 100% sure that the participants have submitted. This is unlikely to be a problem even in the case that particpants are working when you do this. The case in which this will be a problem is when all array elements are filled up to participant n, who is still working when they are dropped, and a new participant starts before the other ends. If one of the two participants finishes, then we will see in the data that there is a repeat of the same particpant.</p></div>
+</body>
+<script type="text/javascript">
+	var saved_and_cleared = false;
+	var saved_and_reset = false;
+	function save(clear) {
+		var date = new Date();
+		var dateObj = new Date();
+		var month = dateObj.getUTCMonth() + 1; //months from 1-12
+		var day = dateObj.getUTCDate();
+		var year = dateObj.getUTCFullYear();
+		var hour = dateObj.getUTCHours();
+		var minute = dateObj.getUTCMinutes();
+		var second = dateObj.getUTCSeconds();
+		
+		var curr_date = year + "_" + month + "_" + day + "_" + minute + "_" + second;	
+		curr_date = curr_date.replace(/\s/g, '');
+
+		var xhttp = new XMLHttpRequest();
+		if (clear == undefined) {
+			clear = "no";
+		}
+		xhttp.open("GET", "save.php?date=" + curr_date + "&clear=" + clear, true);
+		xhttp.send();
+		$('#save').html("results have been saved to <p> "+curr_date+"_results.csv </p> in results folder");
+		$('#save').css('background-color', 'gray');
+		return curr_date;
+	}
+	function save_and_clear() {
+		if (!saved_and_cleared){
+			if (confirm("Are you sure? This will save and clear the current data.")) {
+				saved_and_cleared = true;
+				curr_date = save("yes");
+				$('#save_and_clear').html("results have been saved to <p> " + curr_date + "_results.csv </p> in results folder and current collection has been reset. ");
+				$('#save_and_clear').css('background-color', 'gray');
+				document.getElementById("save_and_clear").id = "no_id";
+			}
+		}
+	}
+
+	function save_and_reset() {
+		if (!saved_and_reset) {
+			if (confirm("Are you sure? This will reset the participant number.")) {
+				saved_and_reset = true;
+
+				var xhttp = new XMLHttpRequest();
+				xhttp.open("GET", "counter/call_counter_function.php?function=resett", true);
+				xhttp.send();
+
+				curr_date = save("yes");
+				$('#save_and_reset').html("results have been saved to <p> " + curr_date + "_results.csv </p> in results folder and current collection has been reset. ");
+				$('#save_and_reset').css('background-color', 'gray');
+				document.getElementById("save_and_reset").id = "no_id";
+			} 
+		}
+	}
+
+	function remove_unfinished_participants() {
+		var n = $('#clear_up_to').val();
+		if (confirm("Are you sure? You are clearing up to participant: " + n)) {
+			var xhttp = new XMLHttpRequest();
+			xhttp.open("GET", "counter/call_counter_function.php?function=stripUnfinished&clear_up_to=" + n, true);
+			xhttp.send();
+			$('#remove_unfinished_participants').html("Removed unfinished participants up to participant " + n);
+			$('#remove_unfinished_participants').css('background-color', 'gray');
+		}
+	}
+	$('#save').click(save)
+	$('#save_and_clear').click(save_and_clear)
+	$('#save_and_reset').click(save_and_reset)
+	$('#remove_unfinished_participants').click(remove_unfinished_participants)
+</script>
+</html>

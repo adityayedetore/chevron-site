@@ -1,0 +1,113 @@
+.trialDiv {
+	position: relative;
+	border: none;
+	padding: 0;
+	width: 80vw;
+	max-width: 550px;
+	height: 80vw;
+	max-height: 550px;
+	margin: 0 auto;
+	margin-top: 20px;
+	display: none
+}
+
+body {
+	font-family: Arial, Helvetica;
+	font-size: 14pt
+}
+
+.instructions {
+	position: relative;
+	border: none;
+	padding: 0;
+	width: 80vw;
+	max-width: 550px;
+	height: 80vw;
+	max-height: 550px;
+	margin: 0 auto;
+	margin-top: 20px;
+	display: none;
+}
+
+#questionInstructions {
+	display: block;
+}
+
+#movieLoading p {
+	border: 2px solid gray;
+	text-align: center;
+	line-height: 550px;
+	font-size: 40px;
+}
+
+.trials {
+	border: 2px solid gray;
+}
+
+.greyButtonText {
+	color: #c8c8c8;
+	text-decoration: none;
+}
+
+.greyButtonText:hover {
+	color: #fff
+}
+
+.greyButton {
+	width: 200px;
+	text-align: center;
+	border: 4px outset gray;
+	background: gray;
+	padding: 5px;
+	margin: 0 auto;
+}
+
+.preventMouseover {
+	position: absolute;
+	top: 20px;
+	left: 20px;
+	bottom: 20px;
+	right: 20px;
+	pointer-events: none;
+	cursor: none!important
+}
+
+textarea {
+	width: 100%;
+	height: 50px;
+	font-size: 15px
+}
+
+#endExperiment {
+	color: #c8c8c8;
+	text-decoration: none
+}
+
+#endExperiment:hover {
+	color: #fff
+}
+
+#endExperimentButton {
+	width: 200px;
+	text-align: center;
+	border: 4px outset gray;
+	background: gray;
+	padding: 5px;
+	margin: 0 auto;
+	margin-top: 10px
+}
+
+.mouseoverNone {
+	width: 100%;
+	height: 100%;
+	cursor: none;
+  display: none;
+}
+
+#submitPage {
+	height: 300px
+}
+
+#submitButton {
+	display: none;
+}
