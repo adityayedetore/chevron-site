@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+        <link rel="stylesheet" type="text/css" href="style.css">
+        <title>start page</title>
+        <style>
+            body {
+                margin: 0 auto;
+                height: 500px;
+                width: 500px;
+            }
+            #redirect {
+                margin: 0 auto;
+                width: 80px;
+                padding: 5px;
+                background-color: grey;
+                border: 4px outset grey;
+                color: white;
+            }
+        </style>
+    </head>
+    <body>
+		<p> <b> Enter password</b></p>
+		<p>Copy paste the password then click the button. <input type="text" name="name" id="password"></p>
+		<div id="redirect">Submit</div>
+		<script type="text/javascript">
+		    function redirect() {
+		        var password = $('#password').val();
+		        if (password == "JbNHKx6HxZxQyQ!" | password == "password"){
+		            open("index.html", "_self");
+		        }
+		    }
+		    $("#redirect").click(redirect);
+		    
+		</script>
+    </body>
+</html>
